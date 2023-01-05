@@ -52,11 +52,13 @@ class MainApp(App):
         self.magic_run = False
 
         self.counters = {}
+        self.view_names = {}
         self.view_units = {}        # elems for viewing
         self.view_counters = {}     #
 
         for person in PERSONS:
             self.counters[person] = 0
+            self.view_names[person] = Label(text=person, font_name="pixel")
             self.view_counters[person] = Label(text=str(0), font_name="pixel")
             # self.view_units[person] = Label(
             #     text="-->",
@@ -81,6 +83,13 @@ class MainApp(App):
             background_down='assets/start_button_2.png'
         )
 
+        self.settings_button = Button(
+            size_hint=(.14, .09),
+            pos_hint={'center_x': .9, 'center_y': .93},
+            background_normal='assets/settings_button.png',
+            background_down='assets/settings_button.png'
+        )
+
         sound = SoundLoader.load('assets/theme.mp3')
         if sound:
             sound.loop = True
@@ -103,13 +112,14 @@ class MainApp(App):
         self.main_box.add_widget(finish)
 
         for person in PERSONS:
-            names_box.add_widget(Label(text=person, font_name="pixel"))
+            names_box.add_widget(self.view_names[person])
             counter_box.add_widget(self.view_counters[person])
             self.main_box.add_widget(self.view_units[person])
 
         self.main_box.add_widget(names_box)
         self.main_box.add_widget(counter_box)
         self.main_box.add_widget(self.start_button)
+        self.main_box.add_widget(self.settings_button)
         #main_box.add_widget(finish)
 
         #self.main_box.add_widget(Image(source="assets/win.png"))
@@ -131,6 +141,9 @@ class MainApp(App):
     def make_magic(self):
         for person in PERSONS:
             Clock.schedule_interval(self.view_units[person].update, 1.0 / 60.0)
+            self.view_names[person].color = (1, 1, 1, 1)
+            self.view_counters[person].color = (1, 1, 1, 1)
+
         # .source = f"assets/t_{(PERSONS.index(person) % (len(PERSONS) - 1)) + 1}_1.png"
 
         self.magic_run = True
@@ -154,11 +167,16 @@ class MainApp(App):
 
                 if self.counters[person] >= WIN_COUNT:
                     self.magic_run = False
+                    self.view_names[person].color = (1, .84, .0, 1)
+                    self.view_counters[person].color = (1, .84, .0, 1)
                     break
 
         for person in PERSONS:
             self.counters[person] = 0
             Clock.unschedule(self.view_units[person].update)
+
+        self.start_button.background_normal = 'assets/start_button_1.png'
+        self.start_button.background_down = 'assets/start_button_2.png'
 
 
 if __name__ == '__main__':
