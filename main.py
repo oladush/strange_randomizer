@@ -77,8 +77,8 @@ class MainApp(App):
         self.start_button = Button(
             size_hint=(.32, .12),
             pos_hint={'center_x': .5, 'center_y': .2},
-            background_normal='assets/1.png',
-            background_down='assets/2.png'
+            background_normal='assets/start_button_1.png',
+            background_down='assets/start_button_2.png'
         )
 
         sound = SoundLoader.load('assets/theme.mp3')
@@ -121,12 +121,12 @@ class MainApp(App):
             self.magic_thread = threading.Thread(target=self.make_magic, daemon=True)
             self.magic_thread.start()
 
-            button.background_normal = 'assets/2.png'
-            button.background_down = 'assets/1.png'
+            button.background_normal = 'assets/start_button_2.png'
+            button.background_down = 'assets/start_button_1.png'
         else:
             self.magic_run = False
-            button.background_normal = 'assets/1.png'
-            button.background_down = 'assets/2.png'
+            button.background_normal = 'assets/start_button_1.png'
+            button.background_down = 'assets/start_button_2.png'
 
     def make_magic(self):
         for person in PERSONS:
@@ -164,3 +164,4 @@ class MainApp(App):
 if __name__ == '__main__':
     app = MainApp()
     app.run()
+
